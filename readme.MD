@@ -1,3 +1,4 @@
+# PROJECT IS UNFINISHED
 # Module Manager
 
 A web application built with **Django** for managing subject modules. The system allows authenticated users to create, view, edit, and manage their own modules and generate a PDF document from module data.
