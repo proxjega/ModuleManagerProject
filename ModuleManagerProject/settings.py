@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import sys
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,11 +79,21 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "OPTIONS": {
-            "service": "my_service",
-            "passfile": "/home/proxjega/.my_pgpass",
+            "service": getenv("PGSERVICE", "my_service"),
+            "passfile": getenv("PGPASSFILE", str(Path.home() / ".my_pgpass")),
+        },
+        "TEST": {
+            "NAME": getenv("TEST_DB_NAME", "test_database"),
         },
     }
 }
+
+# Keep tests runnable even when PostgreSQL is not available locally.
+if "test" in sys.argv and getenv("USE_SQLITE_FOR_TESTS", "1") == "1":
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "test_db.sqlite3",
+    }
 
 
 # Password validation

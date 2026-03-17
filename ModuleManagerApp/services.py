@@ -9,3 +9,4 @@ def create_module(user, data):
         teacher=data["teacher"],
         description=data.get("description", "")
     )
+    return module
