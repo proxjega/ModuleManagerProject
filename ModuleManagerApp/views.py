@@ -15,7 +15,7 @@ def module_create(request):
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
             services.create_module(request.user, form.cleaned_data)
-            return redirect("modules")
+            return redirect("modules") #do this
     else:
         form = forms.ModuleForm()
-    return render()
+    return render() # template

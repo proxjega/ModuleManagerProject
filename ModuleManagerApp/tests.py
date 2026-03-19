@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from . import forms
-from . import views
+from .views import  module_create
 from . import services
 from .models import Module
 
@@ -23,8 +24,23 @@ class ModuleFormTest(TestCase):
         })
         self.assertFalse(form.is_valid())
         
-class ModelCreateViewTest(TestCase):
+class ModuleCreateViewTest(TestCase):
     pass
+    # def setUp(self):
+    #     self.user = User.objects.create_user("testuser", password="pass")
+    # def test_module_create_view(self):
+    #     self.client.login(username="testuser", password="pass")
+
+    #     response = self.client.post(reverse("module_create"), {
+    #         "title": "Biology",
+    #         "teacher": "Dr X",
+    #         "description": "Test"
+    #     })
+
+    #     self.assertEqual(response.status_code, 302)  
+    #     self.assertEqual(Module.objects.count(), 1)
+        
+        
 
 class CreateModuleServiceTest(TestCase):
     def setUp(self):
