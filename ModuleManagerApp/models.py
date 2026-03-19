@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-class Profile(models.Model):
+class CustomUser(AbstractUser):
     DEGREE_BACHELOR = "bachelor"
     DEGREE_MASTER = "master"
     DEGREE_DOCTORAL = "doctoral"
@@ -14,7 +14,6 @@ class Profile(models.Model):
     (DEGREE_DOCTORAL, "Doctoral"),
     ]
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     study_institution = models.CharField(max_length=50)
     degree = models.CharField(max_length=8, choices=DEGREE_CHOICES, default=DEGREE_BACHELOR)
     name_of_program = models.CharField(max_length=50)
@@ -23,9 +22,11 @@ class Profile(models.Model):
         MaxValueValidator(timezone.now().year + 1),
     ])
     
+    def __str__(self):
+        return self.username
 
 class Module(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="modules")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="modules")
     title = models.CharField(max_length=200)
     teacher = models.CharField(max_length=50)
     description = models.TextField(blank=True)
