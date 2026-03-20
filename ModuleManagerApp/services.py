@@ -24,3 +24,15 @@ def register_user(data):
     )
     user.save()
     return user
+
+def redact_profile(user, data):
+    current_user = CustomUser.objects.get(pk=user.id)
+    current_user.first_name = data.get("first_name", current_user.first_name)
+    current_user.last_name = data.get("last_name", current_user.last_name)
+    current_user.email = data.get("email", current_user.email)
+    current_user.study_institution = data.get("study_institution", current_user.study_institution)
+    current_user.degree=data.get("degree", current_user.degree)
+    current_user.name_of_program = data.get("name_of_program", current_user.name_of_program)
+    current_user.start_year = data.get("start_year", current_user.start_year)
+    current_user.save()
+    

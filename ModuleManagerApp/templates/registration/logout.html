@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Logged Out</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 24px;
+			background: #f5f5f5;
+		}
+
+		.message-card {
+			max-width: 640px;
+			margin: 0 auto;
+			background: #ffffff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 20px;
+		}
+
+		h1 {
+			margin-top: 0;
+		}
+
+		.button-link {
+			display: inline-block;
+			margin-top: 12px;
+			text-decoration: none;
+			border-radius: 6px;
+			padding: 10px 14px;
+			font-size: 14px;
+			background: #0b63ce;
+			color: #fff;
+		}
+
+		.button-link:hover {
+			background: #084fa5;
+		}
+	</style>
+</head>
+<body>
+	<main class="message-card">
+		<h1>You have been logged out</h1>
+		<a class="button-link" href="{% url 'index' %}">Go to main page</a>
+	</main>
+</body>
+</html>

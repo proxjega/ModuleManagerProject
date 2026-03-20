@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Module Manager</title>
+	<style>
+		:root {
+			--bg: #f4efe6;
+			--panel: #fffdf8;
+			--text: #1f1b16;
+			--muted: #5f5448;
+			--primary: #1b7a68;
+			--primary-hover: #155d4f;
+			--secondary: #e7ddd1;
+			--secondary-hover: #d8caba;
+			--border: #d8cdbf;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: Georgia, "Times New Roman", Times, serif;
+			color: var(--text);
+			background:
+				radial-gradient(circle at 90% 10%, #ddd2c3 0, #ddd2c300 35%),
+				radial-gradient(circle at 20% 80%, #d5e7dd 0, #d5e7dd00 30%),
+				var(--bg);
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 24px;
+		}
+
+		.container {
+			width: min(940px, 100%);
+			background: var(--panel);
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			padding: 32px;
+			box-shadow: 0 10px 28px rgba(36, 27, 15, 0.12);
+			animation: fade-up 500ms ease-out;
+		}
+
+		h1 {
+			margin: 0;
+			font-size: clamp(2rem, 4vw, 2.8rem);
+			letter-spacing: 0.02em;
+		}
+
+		.subtitle {
+			margin: 10px 0 22px;
+			color: var(--muted);
+			line-height: 1.6;
+			max-width: 70ch;
+		}
+
+		.actions {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			margin: 8px 0 24px;
+		}
+
+		.btn {
+			display: inline-block;
+			text-decoration: none;
+			padding: 11px 20px;
+			border-radius: 9px;
+			border: 1px solid transparent;
+			font-weight: 600;
+			transition: background 0.2s ease, transform 0.2s ease;
+		}
+
+		.btn:hover {
+			transform: translateY(-1px);
+		}
+
+		.btn-primary {
+			background: var(--primary);
+			color: #fff;
+		}
+
+		.btn-primary:hover {
+			background: var(--primary-hover);
+		}
+
+		.btn-secondary {
+			background: var(--secondary);
+			color: var(--text);
+			border-color: var(--border);
+		}
+
+		.btn-secondary:hover {
+			background: var(--secondary-hover);
+		}
+
+		section + section {
+			margin-top: 18px;
+		}
+
+		h2 {
+			font-size: 1.1rem;
+			margin-bottom: 8px;
+		}
+
+		ul {
+			margin: 0;
+			padding-left: 20px;
+			color: var(--muted);
+			line-height: 1.5;
+		}
+
+		p {
+			margin: 0;
+			color: var(--muted);
+			line-height: 1.6;
+		}
+
+		@keyframes fade-up {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (max-width: 640px) {
+			.container {
+				padding: 24px;
+			}
+
+			.actions {
+				flex-direction: column;
+			}
+
+			.btn {
+				text-align: center;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="container">
+		<h1>Module Manager</h1>
+		<p class="subtitle">
+			A Django web application for managing subject modules. Authenticated users can create,
+			update, and view their own module data and generate PDF documents from module information.
+		</p>
+
+		<div class="actions">
+			<a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+			<a class="btn btn-secondary" href="{% url 'register' %}">Register</a>
+		</div>
+
+		<section>
+			<h2>Architecture</h2>
+			<p>
+				The project follows Django's Model-View-Template pattern to keep data models,
+				request handling, and UI rendering clearly separated.
+			</p>
+		</section>
+
+		<section>
+			<h2>Design Principles</h2>
+			<ul>
+				<li>Models handle persistence and database mapping.</li>
+				<li>Forms validate user input.</li>
+				<li>Views handle request routing and responses.</li>
+				<li>Services contain business logic like registration and module management.</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Features</h2>
+			<ul>
+				<li>User authentication</li>
+				<li>Per-user module management</li>
+				<li>Module creation and editing</li>
+				<li>Module information export to PDF</li>
+			</ul>
+		</section>
+	</main>
+</body>
+</html>

@@ -5,7 +5,7 @@ from . import forms
 from . import services
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, "index.html")
 
 def register(request):
     form = forms.RegisterForm()
@@ -24,10 +24,20 @@ def module_create(request):
             return redirect("modules") #do this
     else:
         form = forms.ModuleForm()
-    return render() # template
+    return render(request, "module_create") # template
 
 
 def profile(request):
     if request.user.is_authenticated == False:
         return redirect("login")
+    if request.method == "POST":
+        form = forms.ProfileEditForm(request.POST)
+        if form.is_valid():
+            services.redact_profile(request.user, form.cleaned_data)
+            return redirect("profile")
+    else:
+        is_edit_mode = request.GET.get("edit") == "1"
+        if is_edit_mode:
+            form = forms.ProfileEditForm(instance=request.user)
+            return render(request, "accounts/profile.html", {"form":form})
     return render(request, "accounts/profile.html")

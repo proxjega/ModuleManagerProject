@@ -64,37 +64,49 @@
 </head>
 <body>
 	<main class="profile-card">
-		<h1>Your Profile</h1>
-
 		<dl>
 			<dt>Username</dt>
 			<dd>{{ request.user.username }}</dd>
+            {% if form %}
+                <dt>Redact Profile</dt>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="button">Save</button>
+                </form>
+            {% else %}
+                <dt>First Name</dt>
+                <dd>{{ request.user.first_name }}</dd>
 
-			<dt>First Name</dt>
-			<dd>{{ request.user.first_name }}</dd>
+                <dt>Last Name</dt>
+                <dd>{{ request.user.last_name }}</dd>
 
-			<dt>Last Name</dt>
-			<dd>{{ request.user.last_name }}</dd>
+                <dt>Email</dt>
+                <dd>{{ request.user.email }}</dd>
 
-			<dt>Email</dt>
-			<dd>{{ request.user.email }}</dd>
+                <dt>Study Institution</dt>
+                <dd>{{ request.user.study_institution }}</dd>
 
-			<dt>Study Institution</dt>
-			<dd>{{ request.user.study_institution }}</dd>
+                <dt>Degree</dt>
+                <dd>{{ request.user.get_degree_display }}</dd>
 
-			<dt>Degree</dt>
-			<dd>{{ request.user.get_degree_display }}</dd>
+                <dt>Program Name</dt>
+                <dd>{{ request.user.name_of_program }}</dd>
 
-			<dt>Program Name</dt>
-			<dd>{{ request.user.name_of_program }}</dd>
+                <dt>Start Year</dt>
+                <dd>{{ request.user.start_year }}</dd>
+            </dl>
 
-			<dt>Start Year</dt>
-			<dd>{{ request.user.start_year }}</dd>
-		</dl>
-
-		<div class="action-row">
-			<button type="button" class="button">Redact profile</button>
-		</div>
+            <div class="action-row">
+                <a href="{% url 'profile' %}?edit=1">
+                    <button type="button" class="button">Redact profile</button>
+                </a>
+				<form method="post" action="{% url 'logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="button">Logout</button>
+				</form>
+            </div>
+        {% endif %}
 	</main>
 </body>
 </html>
