@@ -1,9 +1,64 @@
-<h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #f5f5f5;
+        }
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create account</button>
-</form>
+        .auth-card {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
 
-<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        h1 {
+            margin-top: 0;
+        }
+
+        form p {
+            margin: 0 0 12px 0;
+        }
+
+        .button {
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 14px;
+            background: #0b63ce;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #084fa5;
+        }
+
+        .link-row {
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <main class="auth-card">
+        <h1>Register</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Create account</button>
+        </form>
+
+        <p class="link-row">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </main>
+</body>
+</html>

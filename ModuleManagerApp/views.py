@@ -25,3 +25,9 @@ def module_create(request):
     else:
         form = forms.ModuleForm()
     return render() # template
+
+
+def profile(request):
+    if request.user.is_authenticated == False:
+        return redirect("login")
+    return render(request, "accounts/profile.html")
