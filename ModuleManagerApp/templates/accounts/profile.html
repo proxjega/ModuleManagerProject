@@ -5,108 +5,272 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Profile</title>
 	<style>
-		body {
-			font-family: sans-serif;
-			margin: 0;
-			padding: 24px;
-			background: #f5f5f5;
+		:root {
+			--bg: #f7f3ec;
+			--panel: #fffdf8;
+			--text: #1f1a15;
+			--muted: #66594c;
+			--border: #dfd4c6;
+			--primary: #0d6e5a;
+			--primary-hover: #0b5848;
+			--danger: #b42318;
 		}
 
-		.profile-card {
-			max-width: 720px;
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			padding: 24px;
+			font-family: Georgia, "Times New Roman", Times, serif;
+			color: var(--text);
+			background:
+				radial-gradient(circle at 10% 10%, #e0d5c7 0, #e0d5c700 32%),
+				radial-gradient(circle at 88% 82%, #d4e6dd 0, #d4e6dd00 30%),
+				var(--bg);
+		}
+
+		.page {
+			width: min(960px, 100%);
 			margin: 0 auto;
-			background: #ffffff;
-			border: 1px solid #ddd;
-			border-radius: 8px;
-			padding: 20px;
+			background: var(--panel);
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			padding: 28px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+		}
+
+		.top-row {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-items: center;
 		}
 
 		h1 {
-			margin-top: 0;
+			margin: 0;
+			font-size: clamp(1.6rem, 3vw, 2.2rem);
+		}
+
+		.actions {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.button {
+			display: inline-block;
+			text-decoration: none;
+			border: 1px solid var(--border);
+			border-radius: 9px;
+			padding: 10px 14px;
+			color: var(--text);
+			background: #efe6db;
+			font-weight: 600;
+			font-family: inherit;
+			font-size: 15px;
+			line-height: 1.2;
+			cursor: pointer;
+			transition: transform 0.15s ease, background 0.2s ease;
+		}
+
+		.button:hover {
+			transform: translateY(-1px);
+			background: #e6d8c9;
+		}
+
+		.button.primary {
+			background: var(--primary);
+			border-color: var(--primary);
+			color: #fff;
+		}
+
+		.button.primary:hover {
+			background: var(--primary-hover);
+		}
+
+		.subtitle {
+			margin: 10px 0 20px;
+			color: var(--muted);
 		}
 
 		dl {
 			display: grid;
-			grid-template-columns: 200px 1fr;
+			grid-template-columns: minmax(150px, 220px) 1fr;
 			gap: 10px 16px;
-			margin: 0 0 20px 0;
+			margin: 0;
 		}
 
 		dt {
 			font-weight: 700;
-			color: #333;
+			color: #3a3027;
 		}
 
 		dd {
 			margin: 0;
-			color: #111;
 		}
 
-		.action-row {
+		.form-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 12px;
+		}
+
+		.field {
 			display: flex;
-			justify-content: flex-end;
+			flex-direction: column;
+			gap: 6px;
 		}
 
-		.button {
-			border: none;
+		.field label {
+			font-weight: 600;
+		}
+
+		.field input,
+		.field textarea,
+		.field select {
+			width: 100%;
+			border: 1px solid #cfcfcf;
 			border-radius: 6px;
-			padding: 10px 14px;
-			font-size: 14px;
-			background: #0b63ce;
-			color: #fff;
-			cursor: pointer;
+			padding: 9px 10px;
+			font: inherit;
 		}
 
-		.button:hover {
-			background: #084fa5;
+		.field.with-error input,
+		.field.with-error textarea,
+		.field.with-error select {
+			border-color: #d92d20;
+			background: #fff7f7;
+		}
+
+		.error-list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			color: var(--danger);
+			font-size: 13px;
+		}
+
+		.non-field-errors {
+			list-style: none;
+			margin: 0 0 12px;
+			padding: 10px;
+			border: 1px solid #f3b6b2;
+			border-radius: 6px;
+			background: #fff2f1;
+			color: var(--danger);
+		}
+
+		.footer-actions {
+			margin-top: 20px;
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.inline-form {
+			margin: 0;
+		}
+
+		@media (max-width: 640px) {
+			.page {
+				padding: 20px;
+			}
+
+			dl {
+				grid-template-columns: 1fr;
+				gap: 4px;
+			}
+
+			.footer-actions .button,
+			.actions .button {
+				text-align: center;
+				flex: 1;
+			}
 		}
 	</style>
 </head>
 <body>
-	<main class="profile-card">
-		<dl>
-			<dt>Username</dt>
-			<dd>{{ request.user.username }}</dd>
-            {% if form %}
-                <dt>Redact Profile</dt>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="button">Save</button>
-                </form>
-            {% else %}
-                <dt>First Name</dt>
-                <dd>{{ request.user.first_name }}</dd>
+	<main class="page">
+		<div class="top-row">
+			<h1>Profile</h1>
+			<div class="actions">
+				<a class="button" href="{% url 'modules' %}">Modules</a>
+			</div>
+		</div>
 
-                <dt>Last Name</dt>
-                <dd>{{ request.user.last_name }}</dd>
+		<p class="subtitle">Your account details and study information.</p>
 
-                <dt>Email</dt>
-                <dd>{{ request.user.email }}</dd>
+		{% if form %}
+			<form method="post">
+				{% csrf_token %}
+				{% if form.non_field_errors %}
+					<ul class="non-field-errors">
+						{% for error in form.non_field_errors %}
+							<li>{{ error }}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
 
-                <dt>Study Institution</dt>
-                <dd>{{ request.user.study_institution }}</dd>
+				<div class="form-grid">
+					{% for field in form %}
+						<div class="field{% if field.errors %} with-error{% endif %}">
+							{{ field.label_tag }}
+							{{ field }}
+							{% if field.errors %}
+								<ul class="error-list">
+									{% for error in field.errors %}
+										<li>{{ error }}</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
 
-                <dt>Degree</dt>
-                <dd>{{ request.user.get_degree_display }}</dd>
+				<div class="footer-actions">
+					<button type="submit" class="button primary">Save profile</button>
+					<a class="button" href="{% url 'profile' %}">Cancel</a>
+				</div>
+			</form>
+		{% else %}
+			<dl>
+				<dt>Username</dt>
+				<dd>{{ request.user.username }}</dd>
 
-                <dt>Program Name</dt>
-                <dd>{{ request.user.name_of_program }}</dd>
+				<dt>First Name</dt>
+				<dd>{{ request.user.first_name }}</dd>
 
-                <dt>Start Year</dt>
-                <dd>{{ request.user.start_year }}</dd>
-            </dl>
+				<dt>Last Name</dt>
+				<dd>{{ request.user.last_name }}</dd>
 
-            <div class="action-row">
-                <a href="{% url 'profile' %}?edit=1">
-                    <button type="button" class="button">Redact profile</button>
-                </a>
-				<form method="post" action="{% url 'logout' %}">
+				<dt>Email</dt>
+				<dd>{{ request.user.email }}</dd>
+
+				<dt>Study Institution</dt>
+				<dd>{{ request.user.study_institution }}</dd>
+
+				<dt>Degree</dt>
+				<dd>{{ request.user.get_degree_display }}</dd>
+
+				<dt>Program Name</dt>
+				<dd>{{ request.user.name_of_program }}</dd>
+
+				<dt>Start Year</dt>
+				<dd>{{ request.user.start_year }}</dd>
+			</dl>
+
+			<div class="footer-actions">
+				<a class="button primary" href="{% url 'profile' %}?edit=1">Edit profile</a>
+				<form method="post" action="{% url 'logout' %}" class="inline-form">
 					{% csrf_token %}
 					<button type="submit" class="button">Logout</button>
 				</form>
-            </div>
-        {% endif %}
+			</div>
+		{% endif %}
 	</main>
 </body>
 </html>

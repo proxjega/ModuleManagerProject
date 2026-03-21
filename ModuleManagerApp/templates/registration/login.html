@@ -5,57 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        :root {
+            --bg: #f7f3ec;
+            --panel: #fffdf8;
+            --text: #1f1a15;
+            --muted: #66594c;
+            --border: #dfd4c6;
+            --primary: #0d6e5a;
+            --primary-hover: #0b5848;
+            --danger: #b42318;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
             margin: 0;
+            min-height: 100vh;
             padding: 24px;
-            background: #f5f5f5;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 10%, #e0d5c7 0, #e0d5c700 32%),
+                radial-gradient(circle at 88% 82%, #d4e6dd 0, #d4e6dd00 30%),
+                var(--bg);
+            display: grid;
+            place-items: center;
         }
 
         .auth-card {
-            max-width: 720px;
-            margin: 0 auto;
-            background: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
+            width: min(520px, 100%);
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
-            margin-top: 0;
+            margin: 0;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
         }
 
-        form p {
-            margin: 0 0 12px 0;
+        .subtitle {
+            margin: 10px 0 20px;
+            color: var(--muted);
+        }
+
+        .field {
+            margin: 0 0 12px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            border: 1px solid #cfcfcf;
+            border-radius: 6px;
+            padding: 9px 10px;
+            font: inherit;
+        }
+
+        .field.with-error input,
+        .field.with-error textarea,
+        .field.with-error select {
+            border-color: #d92d20;
+            background: #fff7f7;
+        }
+
+        .error-list {
+            list-style: none;
+            margin: 6px 0 0;
+            padding: 0;
+            color: var(--danger);
+            font-size: 13px;
+        }
+
+        .non-field-errors {
+            list-style: none;
+            margin: 0 0 12px;
+            padding: 10px;
+            border: 1px solid #f3b6b2;
+            border-radius: 6px;
+            background: #fff2f1;
+            color: var(--danger);
         }
 
         .button {
-            border: none;
-            border-radius: 6px;
+            display: inline-block;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 9px;
             padding: 10px 14px;
-            font-size: 14px;
-            background: #0b63ce;
-            color: #fff;
+            color: var(--text);
+            background: #efe6db;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.2;
             cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
         }
 
         .button:hover {
-            background: #084fa5;
+            transform: translateY(-1px);
+            background: #e6d8c9;
+        }
+
+        .button.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .button.primary:hover {
+            background: var(--primary-hover);
         }
 
         .link-row {
             margin-top: 16px;
+            color: var(--muted);
+        }
+
+        .link-row a {
+            color: var(--primary);
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
     <main class="auth-card">
         <h1>Login</h1>
+        <p class="subtitle">Sign in to manage your modules and profile.</p>
 
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="button">Login</button>
+            {% if form.non_field_errors %}
+                <ul class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="field{% if field.errors %} with-error{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="error-list">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="button primary">Login</button>
         </form>
 
         <p class="link-row">Do not have an account? <a href="{% url 'register' %}">Register</a></p>

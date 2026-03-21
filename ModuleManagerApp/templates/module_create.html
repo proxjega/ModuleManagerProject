@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Create Module</title>
     <style>
         :root {
             --bg: #f7f3ec;
@@ -32,8 +32,8 @@
                 var(--bg);
         }
 
-        .auth-card {
-            width: min(860px, 100%);
+        .page {
+            width: min(960px, 100%);
             margin: 0 auto;
             background: var(--panel);
             border: 1px solid var(--border);
@@ -42,9 +42,23 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+        .top-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         h1 {
             margin: 0;
             font-size: clamp(1.6rem, 3vw, 2.2rem);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .subtitle {
@@ -52,14 +66,8 @@
             color: var(--muted);
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 12px;
-        }
-
         .field {
-            margin: 0;
+            margin: 0 0 12px;
         }
 
         .field label {
@@ -78,11 +86,24 @@
             font: inherit;
         }
 
+        .field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
         .field .helptext {
             display: block;
             margin-top: 6px;
-            color: var(--muted);
+            color: #666;
             font-size: 12px;
+        }
+
+        .error-list {
+            list-style: none;
+            margin: 6px 0 0;
+            padding: 0;
+            color: #b42318;
+            font-size: 13px;
         }
 
         .field.with-error input,
@@ -90,14 +111,6 @@
         .field.with-error select {
             border-color: #d92d20;
             background: #fff7f7;
-        }
-
-        .error-list {
-            list-style: none;
-            margin: 6px 0 0;
-            padding: 0;
-            color: var(--danger);
-            font-size: 13px;
         }
 
         .non-field-errors {
@@ -141,16 +154,6 @@
             background: var(--primary-hover);
         }
 
-        .link-row {
-            margin-top: 16px;
-            color: var(--muted);
-        }
-
-        .link-row a {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
         .footer-actions {
             margin-top: 20px;
             display: flex;
@@ -159,25 +162,31 @@
         }
 
         @media (max-width: 640px) {
-            .auth-card {
+            .page {
                 padding: 20px;
             }
 
-            .footer-actions .button {
-                flex: 1;
+            .button {
                 text-align: center;
+                flex: 1;
             }
         }
     </style>
 </head>
 <body>
-    <main class="auth-card">
-        <h1>Register</h1>
-        <p class="subtitle">Create an account to manage your modules.</p>
+    <main class="page">
+        <div class="top-row">
+            <h1>Create Module</h1>
+            <div class="actions">
+                <a class="button" href="{% url 'modules' %}">Modules</a>
+                <a class="button" href="{% url 'profile' %}">Profile</a>
+            </div>
+        </div>
+
+        <p class="subtitle">Add a new module to your account.</p>
 
         <form method="post">
             {% csrf_token %}
-
             {% if form.non_field_errors %}
                 <ul class="non-field-errors">
                     {% for error in form.non_field_errors %}
@@ -186,31 +195,28 @@
                 </ul>
             {% endif %}
 
-            <div class="form-grid">
-                {% for field in form %}
-                    <div class="field{% if field.errors %} with-error{% endif %}">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.help_text %}
-                            <small class="helptext">{{ field.help_text }}</small>
-                        {% endif %}
-                        {% if field.errors %}
-                            <ul class="error-list">
-                                {% for error in field.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
+            {% for field in form %}
+                <div class="field{% if field.errors %} with-error{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="helptext">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="error-list">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
 
             <div class="footer-actions">
-                <button type="submit" class="button primary">Create account</button>
+                <button type="submit" class="button primary">Create module</button>
+                <a class="button" href="{% url 'modules' %}">Cancel</a>
             </div>
         </form>
-
-        <p class="link-row">Already have an account? <a href="{% url 'login' %}">Login</a></p>
     </main>
 </body>
 </html>
