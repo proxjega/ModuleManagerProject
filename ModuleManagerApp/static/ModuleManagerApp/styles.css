@@ -1,0 +1,371 @@
+:root {
+    --bg: #f7f3ec;
+    --panel: #fffdf8;
+    --text: #1f1a15;
+    --muted: #66594c;
+    --border: #dfd4c6;
+    --primary: #0d6e5a;
+    --primary-hover: #0b5848;
+    --secondary: #e7ddd1;
+    --secondary-hover: #d8caba;
+    --danger: #b42318;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 10% 10%, #e0d5c7 0, #e0d5c700 32%),
+        radial-gradient(circle at 88% 82%, #d4e6dd 0, #d4e6dd00 30%),
+        var(--bg);
+}
+
+body.auth-page {
+    display: grid;
+    place-items: center;
+}
+
+body.landing-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.app-page {
+    display: block;
+}
+
+.auth-card,
+.page,
+.container,
+.message-card {
+    width: min(960px, 100%);
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card {
+    width: min(520px, 100%);
+}
+
+body.auth-page .message-card {
+    max-width: 640px;
+}
+
+.container {
+    animation: fade-up 500ms ease-out;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.subtitle {
+    margin: 10px 0 20px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.container {
+    width: min(940px, 100%);
+}
+
+.container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.container p,
+.container ul {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.container ul {
+    padding-left: 20px;
+}
+
+.container section + section {
+    margin-top: 18px;
+}
+
+.container h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    letter-spacing: 0.02em;
+}
+
+.field {
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label,
+dt {
+    font-weight: 600;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
+    padding: 9px 10px;
+    font: inherit;
+}
+
+.field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.field .helptext {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.field.with-error input,
+.field.with-error textarea,
+.field.with-error select {
+    border-color: #d92d20;
+    background: #fff7f7;
+}
+
+.error-list,
+.non-field-errors {
+    list-style: none;
+    padding: 0;
+}
+
+.error-list {
+    margin: 6px 0 0;
+    color: var(--danger);
+    font-size: 13px;
+}
+
+.non-field-errors {
+    margin: 0 0 12px;
+    padding: 10px;
+    border: 1px solid #f3b6b2;
+    border-radius: 6px;
+    background: #fff2f1;
+    color: var(--danger);
+}
+
+.button,
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 10px 14px;
+    color: var(--text);
+    background: #efe6db;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.button:hover,
+.btn:hover {
+    transform: translateY(-1px);
+    background: #e6d8c9;
+}
+
+.button.primary,
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.button.primary:hover,
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--secondary-hover);
+}
+
+.link-row {
+    margin-top: 16px;
+    color: var(--muted);
+}
+
+.link-row a {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.top-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions,
+.footer-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.actions {
+    margin: 8px 0 24px;
+}
+
+.footer-actions {
+    margin-top: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.inline-form {
+    margin: 0;
+}
+
+.module-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.module-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    background: #fff;
+}
+
+.module-card h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.module-meta {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.93rem;
+}
+
+.module-description {
+    margin: 10px 0 0;
+    color: #3f362d;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.empty {
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    color: var(--muted);
+}
+
+dl {
+    display: grid;
+    grid-template-columns: minmax(150px, 220px) 1fr;
+    gap: 10px 16px;
+    margin: 0;
+}
+
+dd {
+    margin: 0;
+}
+
+.message-card {
+    max-width: 640px;
+}
+
+.button-link {
+    display: inline-block;
+    margin-top: 12px;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    background: #0b63ce;
+    color: #fff;
+}
+
+.button-link:hover {
+    background: #084fa5;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .auth-card,
+    .page,
+    .container,
+    .message-card {
+        padding: 20px;
+    }
+
+    .actions,
+    .footer-actions {
+        width: 100%;
+    }
+
+    .button,
+    .btn {
+        text-align: center;
+        flex: 1;
+    }
+
+    dl {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    body.landing-page,
+    body.auth-page {
+        align-items: stretch;
+    }
+}
