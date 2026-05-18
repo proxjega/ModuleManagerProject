@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 
 from . import forms
 from . import services
@@ -16,8 +15,15 @@ def register(request):
         form = forms.RegisterForm(request.POST)
         if form.is_valid():
             services.register_user(form.cleaned_data)
-            return HttpResponse("Good") #do this redirect("successful-registration")
+            request.session["registration_successful"] = True
+            return redirect("successful-registration")
     return render(request, "registration/register.html", {"form":form}) # template
+
+
+def successful_registration(request):
+    if not request.session.pop("registration_successful", False):
+        return redirect("register")
+    return render(request, "registration/successful_registration.html")
 
 def module_create(request):
     if request.user.is_authenticated == False:
