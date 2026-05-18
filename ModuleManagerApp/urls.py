@@ -12,4 +12,5 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("module_create/", views.module_create, name="module_create"),
     path("modules/", views.modules, name="modules"),
+    path("modules/<int:module_id>/", views.module_info, name="module_info"),
 ]

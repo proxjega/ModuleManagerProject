@@ -17,7 +17,7 @@ def register(request):
             services.register_user(form.cleaned_data)
             request.session["registration_successful"] = True
             return redirect("successful-registration")
-    return render(request, "registration/register.html", {"form":form}) # template
+    return render(request, "registration/register.html", {"form":form}) 
 
 
 def successful_registration(request):
@@ -26,6 +26,18 @@ def successful_registration(request):
     return render(request, "registration/successful_registration.html")
 
 def module_create(request):
+    if request.user.is_authenticated == False:
+        return redirect("login") # ADD check (20 max modules)
+    if request.method == "POST":
+        form = forms.ModuleForm(request.POST)
+        if form.is_valid():
+            services.create_module(request.user, form.cleaned_data)
+            return redirect("modules") #do this
+    else:
+        form = forms.ModuleForm()
+    return render(request, "module_create.html", {"form": form}) # template
+
+def module_redact(request):
     if request.user.is_authenticated == False:
         return redirect("login") # ADD check (20 max modules)
     if request.method == "POST":
@@ -59,3 +71,14 @@ def modules(request):
     current_user = request.user
     modules = Module.objects.filter(user=current_user).order_by("-updated_at", "-created_at")
     return render(request, "modules.html", {"modules": modules})
+
+
+def module_info(request, module_id):
+    if request.user.is_authenticated == False:
+        return redirect("login")
+
+    module = Module.objects.filter(id=module_id, user=request.user).first()
+    if module is None:
+        return redirect("modules")
+
+    return render(request, "module_info.html", {"module": module})

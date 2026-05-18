@@ -214,6 +214,17 @@ dt {
     background: var(--secondary-hover);
 }
 
+.button.danger {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+.button.danger:hover {
+    background: #8f1d14;
+    border-color: #8f1d14;
+}
+
 .link-row {
     margin-top: 16px;
     color: var(--muted);
@@ -289,6 +300,45 @@ dt {
     color: #3f362d;
     line-height: 1.5;
     white-space: pre-wrap;
+}
+
+.module-info-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.module-info-link:hover {
+    color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.module-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.module-actions .button {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.inline-form-delete {
+    margin: 0;
+    display: inline;
+}
+
+.inline-form-delete .button {
+    margin: 0;
 }
 
 .empty {

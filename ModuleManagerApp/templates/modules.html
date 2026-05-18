@@ -25,11 +25,8 @@
 					<li class="module-card">
 						<h2>{{ module.title }}</h2>
 						<p class="module-meta">Teacher: {{ module.teacher }}</p>
-						{% if module.description %}
-							<p class="module-description">{{ module.description }}</p>
-						{% else %}
-							<p class="module-description">No description added yet.</p>
-						{% endif %}
+						<a class="module-info-link" href="{% url 'module_info' module.id %}">See full module info...</a>
+						
 					</li>
 				{% endfor %}
 			</ul>
