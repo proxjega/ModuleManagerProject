@@ -43,12 +43,34 @@ The application uses **PostgreSQL** as the database backend. Django’s ORM is u
 - Module creation and editing
 - Viewing module data
 - PDF generation from module information
-## Instalation
-### Install dependencies:
+## Installation
+
+### Docker setup:
+
+#### Install dependencies:
+```bash
+# Install docker:
+yay -Syu docker-desktop
+```
+#### Prepare database (postgres in docker):
+
+1. Start the database container:
+```bash
+docker compose up -d db
+```
+This will create a PostgreSQL container published on port `5432:5432` with the following credentials:
+
+- `POSTGRES_DB=djangodb`
+- `POSTGRES_USER=djangouser`
+- `POSTGRES_PASSWORD=django123`
+
+### Running from source:
+
+#### Install dependencies:
 ```bash
 sudo pacman -Syu python postgresql python-psycopg
 ```
-### Prepare database (postgres):
+#### Prepare database (postgres):
 1. Install the database:
 ```bash
 sudo pacman -Syu postgresql 
@@ -86,3 +108,4 @@ user=djangouser
 ```
 localhost:5432:djangodb:djangouser:django123
 ```
+
