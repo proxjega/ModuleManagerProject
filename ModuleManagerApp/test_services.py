@@ -98,4 +98,136 @@ class RegisterUserServiceTest(TestCase):
         user = services.register_user(data)
 
         self.assertEqual(user.degree, CustomUser.DEGREE_BACHELOR)
+
+
+class RedactModuleServiceTest(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            password="pass",
+            study_institution="VILNIUS TECH",
+            degree=CustomUser.DEGREE_BACHELOR,
+            name_of_program="Software Engineering",
+            start_year=2024,
+        )
+        self.module = Module.objects.create(
+            user=self.user,
+            title="Programavimas Python",
+            teacher="Tomas Plankis",
+            description="Original description"
+        )
+
+    def test_redact_module_updates_teacher(self):
+        data = {
+            "teacher": "New Teacher",
+            "description": "Original description"
+        }
+        services.redact_module(self.module.id, data)
+        
+        updated_module = Module.objects.get(pk=self.module.id)
+        self.assertEqual(updated_module.teacher, "New Teacher")
+        self.assertEqual(updated_module.description, "Original description")
+
+    def test_redact_module_updates_description(self):
+        data = {
+            "teacher": "Tomas Plankis",
+            "description": "Updated description"
+        }
+        services.redact_module(self.module.id, data)
+        
+        updated_module = Module.objects.get(pk=self.module.id)
+        self.assertEqual(updated_module.teacher, "Tomas Plankis")
+        self.assertEqual(updated_module.description, "Updated description")
+
+    def test_redact_module_updates_both_fields(self):
+        data = {
+            "teacher": "Another Teacher",
+            "description": "Completely new description"
+        }
+        services.redact_module(self.module.id, data)
+        
+        updated_module = Module.objects.get(pk=self.module.id)
+        self.assertEqual(updated_module.teacher, "Another Teacher")
+        self.assertEqual(updated_module.description, "Completely new description")
+
+    def test_redact_module_preserves_title_and_user(self):
+        data = {
+            "teacher": "New Teacher",
+            "description": "New description"
+        }
+        services.redact_module(self.module.id, data)
+        
+        updated_module = Module.objects.get(pk=self.module.id)
+        self.assertEqual(updated_module.title, "Programavimas Python")
+        self.assertEqual(updated_module.user, self.user)
+
+    def test_redact_module_handles_missing_fields(self):
+        data = {
+            "teacher": "Updated Teacher"
+        }
+        services.redact_module(self.module.id, data)
+        
+        updated_module = Module.objects.get(pk=self.module.id)
+        self.assertEqual(updated_module.teacher, "Updated Teacher")
+        self.assertEqual(updated_module.description, "Original description")
+
+
+class DeleteModuleServiceTest(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser",
+            password="pass",
+            study_institution="VILNIUS TECH",
+            degree=CustomUser.DEGREE_BACHELOR,
+            name_of_program="Software Engineering",
+            start_year=2024,
+        )
+        self.module = Module.objects.create(
+            user=self.user,
+            title="Programavimas Python",
+            teacher="Tomas Plankis",
+            description="Test description"
+        )
+
+    def test_delete_module_removes_from_database(self):
+        self.assertEqual(Module.objects.count(), 1)
+        
+        services.delete_module(self.module.id)
+        
+        self.assertEqual(Module.objects.count(), 0)
+
+    def test_delete_module_specific_module_deleted(self):
+        module2 = Module.objects.create(
+            user=self.user,
+            title="Another Module",
+            teacher="Another Teacher",
+            description="Another description"
+        )
+        
+        services.delete_module(self.module.id)
+        
+        self.assertEqual(Module.objects.count(), 1)
+        self.assertTrue(Module.objects.filter(pk=module2.id).exists())
+        self.assertFalse(Module.objects.filter(pk=self.module.id).exists())
+
+    def test_delete_module_does_not_affect_other_users_modules(self):
+        other_user = CustomUser.objects.create_user(
+            username="otheruser",
+            password="pass",
+            study_institution="KTU",
+            degree=CustomUser.DEGREE_MASTER,
+            name_of_program="Computer Science",
+            start_year=2023,
+        )
+        other_module = Module.objects.create(
+            user=other_user,
+            title="Other Module",
+            teacher="Other Teacher",
+            description="Other description"
+        )
+        
+        services.delete_module(self.module.id)
+        
+        self.assertEqual(Module.objects.count(), 1)
+        self.assertTrue(Module.objects.filter(pk=other_module.id).exists())
         

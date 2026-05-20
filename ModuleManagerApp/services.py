@@ -16,6 +16,10 @@ def redact_module(id, data):
     module.description = data.get("description", module.description)
     module.save()
 
+def delete_module(id):
+    module = Module.objects.get(pk=id)
+    module.delete()
+
 def register_user(data):
     user = CustomUser.objects.create_user(
         username=data["username"],

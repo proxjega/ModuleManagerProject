@@ -28,7 +28,7 @@
         <div class="footer-actions">
             <form method="post" class="inline-form">
                 {% csrf_token %}
-                <button type="submit" class="button">Delete module</button>
+                <button type="submit" class="button danger">Delete module</button>
             </form>
             <a class="button" href="{% url 'modules' %}">Cancel</a>
         </div>

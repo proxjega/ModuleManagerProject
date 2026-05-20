@@ -99,3 +99,19 @@ def module_info(request, module_id):
             form = forms.ModuleRedactForm(instance=module)
             return render(request, "module_info.html", {"form": form, "module": module}) # template
     return render(request, "module_info.html", {"module": module})
+
+def module_delete(request, module_id):
+    if request.user.is_authenticated == False:
+        return redirect("login")
+    
+    module = Module.objects.filter(id=module_id, user=request.user).first()
+    if module is None:
+        return redirect("modules")
+    
+    if request.method == "POST":
+        services.delete_module(module_id)
+        return redirect("modules")
+
+    return render(request, "module_delete.html", {"module": module})
+
+    
