@@ -87,15 +87,15 @@ def module_info(request, module_id):
         return redirect("modules")
     
     if request.method == "POST":
-        form = forms.ModuleForm(request.POST)
+        form = forms.ModuleRedactForm(request.POST)
         if form.is_valid():
 
-            # services.create_module(request.user, form.cleaned_data)
+            services.redact_module(module_id, form.cleaned_data)
 
-            return redirect("modules") #do this
+            return redirect("module_info", module_id=module.id)
     else:
         is_edit_mode = request.GET.get("edit") == "1"
         if is_edit_mode:
-            form = forms.ModuleForm(instance=module)
+            form = forms.ModuleRedactForm(instance=module)
             return render(request, "module_info.html", {"form": form, "module": module}) # template
     return render(request, "module_info.html", {"module": module})

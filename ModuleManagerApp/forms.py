@@ -6,6 +6,11 @@ class ModuleForm(ModelForm):
     class Meta:
         model = Module
         fields = ["title", "teacher", "description"]
+
+class ModuleRedactForm(ModelForm):
+    class Meta:
+        model = Module
+        fields = ["teacher", "description"]
         
 class RegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

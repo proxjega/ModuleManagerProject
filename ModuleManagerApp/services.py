@@ -10,8 +10,11 @@ def create_module(user, data):
     module.save()
     return module
 
-# def redact_module(user, data):
-#     module = Module.objects.get(pk = data.)
+def redact_module(id, data):
+    module = Module.objects.get(pk=id)
+    module.teacher = data.get("teacher", module.teacher)
+    module.description = data.get("description", module.description)
+    module.save()
 
 def register_user(data):
     user = CustomUser.objects.create_user(
