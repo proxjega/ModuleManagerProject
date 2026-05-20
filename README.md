@@ -37,12 +37,11 @@ Each component is responsible for one clear task, improving readability, maintai
 - django>=6.0.5
 - gunicorn>=26.0.0
 - psycopg>=3.3.4
-- psycopg2>=2.9.12
 - reportlab>=4.5.1  
 #### see `pyproject.toml`
 
 
-## Installation
+## Setup
 
 ### Docker setup:
 
@@ -65,6 +64,10 @@ This will create a PostgreSQL container **modulemanager-db** published on port `
 And **modulemanager-app** container with django on port `8000:8000` with two seed accounts:
 - Admin account: `admin:admin`
 - User account: `user:user1234`
+
+#### Then you can use the app
+- http://localhost:8000/app/ - the app
+- http://localhost:8000/admin - admin panel
 
 ### Running from source:
 
