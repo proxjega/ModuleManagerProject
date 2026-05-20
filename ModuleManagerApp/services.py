@@ -14,7 +14,14 @@ from reportlab.platypus import (
 )
 from io import BytesIO
 
+class ModuleLimitExceeded(Exception):
+    pass
+
 def create_module(user, data):
+    module_count = Module.objects.filter(user=user).count()
+    if module_count >= 20:
+        raise ModuleLimitExceeded("You have reached the maximum of 20 modules.")
+
     module = Module.objects.create(
         user=user,
         title=data["title"],

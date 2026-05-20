@@ -29,13 +29,16 @@ def successful_registration(request):
 
 def module_create(request):
     if request.user.is_authenticated == False:
-        return redirect("login") # ADD check (20 max modules)
+        return redirect("login")
     
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
-            services.create_module(request.user, form.cleaned_data)
-            return redirect("modules")
+            try:
+                services.create_module(request.user, form.cleaned_data)
+                return redirect("modules")
+            except services.ModuleLimitExceeded as e:
+                form.add_error(None, str(e))
     else:
         form = forms.ModuleForm()
     return render(request, "module_create.html", {"form": form}) 
