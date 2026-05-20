@@ -5,12 +5,12 @@ from .models import Module, CustomUser
 class ModuleForm(ModelForm):
     class Meta:
         model = Module
-        fields = ["title", "teacher", "description"]
+        fields = ["title", "teacher", "description", "faculty", "module_type", "delivery_mode", "language", "credits"]
 
 class ModuleRedactForm(ModelForm):
     class Meta:
         model = Module
-        fields = ["teacher", "description"]
+        fields = ["teacher", "description", "faculty", "module_type", "delivery_mode", "language", "credits"]
         
 class RegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

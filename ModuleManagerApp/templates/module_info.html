@@ -19,6 +19,11 @@
         {% if not form %}
         <div class="module-card">
             <p class="module-meta">Teacher: {{ module.teacher }}</p>
+            <p class="module-meta">Faculty: {{ module.faculty }}</p>
+            <p class="module-meta">Type: {{ module.get_module_type_display }}</p>
+            <p class="module-meta">Delivery Mode: {{ module.get_delivery_mode_display }}</p>
+            <p class="module-meta">Language: {{ module.get_language_display }}</p>
+            <p class="module-meta">Credits: {{ module.credits }}</p>
             {% if module.description %}
                 <p class="module-description">{{ module.description }}</p>
             {% else %}

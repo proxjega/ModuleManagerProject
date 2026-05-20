@@ -26,10 +26,44 @@ class CustomUser(AbstractUser):
         return self.username
 
 class Module(models.Model):
+    TYPE_OPTIONAL = "optional"
+    TYPE_COMPULSORY = "compulsory"
+
+    DELIVERY_F2F = "face-to-face"
+    DELIVERY_REMOTE = "remote"
+    
+    LANGUAGE_LT = "lithuanian"
+    LANGUAGE_EN = "english"
+
+    TYPE_CHOICES = [
+        (TYPE_COMPULSORY, "Compulsory"),
+        (TYPE_OPTIONAL, "Optional")
+    ]
+
+    DELIVERY_CHOICES = [
+        (DELIVERY_F2F, "Face-to-face"),
+        (DELIVERY_REMOTE, "Remote")
+    ]
+
+    LANGUAGE_CHOICES=[
+        (LANGUAGE_LT, "Lithuanian"),
+        (LANGUAGE_EN, "English")
+    ]
+    
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="modules")
     title = models.CharField(max_length=200)
-    teacher = models.CharField(max_length=50)
+    teacher = models.CharField(max_length=60)
     description = models.TextField(blank=True)
+    faculty = models.TextField(blank=True)
+    module_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default=TYPE_COMPULSORY)
+    delivery_mode = models.CharField(max_length=12, choices=DELIVERY_CHOICES, default=DELIVERY_F2F)
+    language = models.CharField(max_length=10, choices=LANGUAGE_CHOICES, default=LANGUAGE_LT)
+    credits =  models.IntegerField(default=5,
+                                   validators=[
+        MinValueValidator(1),
+        MaxValueValidator(15),
+    ])
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
