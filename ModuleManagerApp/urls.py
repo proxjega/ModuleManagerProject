@@ -14,4 +14,5 @@ urlpatterns = [
     path("modules/", views.modules, name="modules"),
     path("modules/<int:module_id>/", views.module_info, name="module_info"),
     path("modules/<int:module_id>/delete/", views.module_delete, name="module_delete"),
+    path("modules/<int:module_id>/pdf/", views.module_pdf, name="module_pdf"),
 ]

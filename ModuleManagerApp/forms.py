@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, CharField
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Module, CustomUser
 
@@ -35,3 +35,9 @@ class ProfileEditForm(ModelForm):
             "degree",
             "name_of_program",
             "start_year",]
+        
+class PdfForm(Form):
+    filename = CharField(
+        max_length=200,
+        label="Choose the name for generated pdf file"
+    )

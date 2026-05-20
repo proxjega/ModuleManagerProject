@@ -114,4 +114,22 @@ def module_delete(request, module_id):
 
     return render(request, "module_delete.html", {"module": module})
 
+def module_pdf(request, module_id):
+    if request.user.is_authenticated == False:
+        return redirect("login")
+    
+    module = Module.objects.filter(id=module_id, user=request.user).first()
+    if module is None:
+        return redirect("modules")
+    
+    form = forms.PdfForm()
+    if request.method == "POST":
+        form = forms.PdfForm(request.POST)
+        if form.is_valid():
+
+            response = services.generate_pdf(module_id, form.cleaned_data)
+
+            return response
+    return render(request, "module_pdf.html", {"module":module, "form":form})
+
     

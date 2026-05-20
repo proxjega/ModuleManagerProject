@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Module PDF</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ModuleManagerApp/styles.css' %}">
+</head>
+<body class="app-page">
+    <main class="page">
+        <div class="top-row">
+            <h1>Generate PDF</h1>
+            <div class="actions">
+                <a class="button" href="{% url 'module_info' module.id %}">Back to module</a>
+            </div>
+        </div>
+
+        <div class="module-card">
+            <h2>{{ module.title }}</h2>
+            <p class="module-meta">Teacher: {{ module.teacher }}</p>
+            {% if module.description %}
+                <p class="module-description">{{ module.description }}</p>
+            {% else %}
+                <p class="module-description">No description added yet.</p>
+            {% endif %}
+        </div>
+        <br>
+
+        <form method="post" class="form-grid-vertical">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <ul class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="field{% if form.filename.errors %} with-error{% endif %}">
+                {{ form.filename.label_tag }}
+                {{ form.filename }}
+                {% if form.filename.errors %}
+                    <ul class="error-list">
+                        {% for error in form.filename.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="footer-actions">
+                <button type="submit" class="button primary">Generate</button>
+                <a class="button" href="{% url 'module_info' module.id %}">Cancel</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

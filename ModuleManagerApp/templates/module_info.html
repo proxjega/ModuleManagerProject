@@ -26,7 +26,7 @@
             {% endif %}
             <div class="module-actions">
                 <a class="button" href="{% url 'module_info' module.id %}?edit=1">Redact</a>
-                <a class="button" >PDF</a>
+                <a class="button" href="{% url 'module_pdf' module.id %}" >PDF</a>
                 <a class="button danger" href="{% url 'module_delete' module.id %}">Delete</a>
             </div>
         </div>
