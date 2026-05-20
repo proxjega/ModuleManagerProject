@@ -10,6 +10,7 @@ def index(request):
 def register(request):
     if request.user.is_authenticated == True:
         return redirect("profile")
+    
     form = forms.RegisterForm()
     if request.method == "POST":
         form = forms.RegisterForm(request.POST)
@@ -17,6 +18,7 @@ def register(request):
             services.register_user(form.cleaned_data)
             request.session["registration_successful"] = True
             return redirect("successful-registration")
+        
     return render(request, "registration/register.html", {"form":form}) 
 
 
@@ -28,6 +30,7 @@ def successful_registration(request):
 def module_create(request):
     if request.user.is_authenticated == False:
         return redirect("login") # ADD check (20 max modules)
+    
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
@@ -35,22 +38,22 @@ def module_create(request):
             return redirect("modules")
     else:
         form = forms.ModuleForm()
-    return render(request, "module_create.html", {"form": form}) # template
+    return render(request, "module_create.html", {"form": form}) 
 
 def module_redact(request):
     if request.user.is_authenticated == False:
-        return redirect("login") # ADD check (20 max modules)
+        return redirect("login")
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
             services.create_module(request.user, form.cleaned_data)
-            return redirect("modules") #do this
+            return redirect("modules") 
     else:
         is_edit_mode = request.GET.get("edit") == "1"
         if is_edit_mode:
             form = forms.ModuleForm()
             return render(request, "module_create.html", {"form":form})
-    return render(request, "module_create.html", {"form": form}) # template
+    return render(request, "module_create.html", {"form": form}) 
 
 
 def profile(request):

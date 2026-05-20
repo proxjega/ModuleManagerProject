@@ -78,10 +78,11 @@ WSGI_APPLICATION = 'ModuleManagerProject.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "service": getenv("PGSERVICE", "my_service"),
-            "passfile": getenv("PGPASSFILE", str(Path.home() / ".my_pgpass")),
-        },
+        "NAME": getenv("POSTGRES_DB", "djangodb"),
+        "USER": getenv("POSTGRES_USER", "djangouser"),
+        "PASSWORD": getenv("POSTGRES_PASSWORD", "django123"),
+        "HOST": getenv("POSTGRES_HOST", "localhost"),
+        "PORT": getenv("POSTGRES_PORT", "5432"),
         "TEST": {
             "NAME": getenv("TEST_DB_NAME", "test_database"),
         },

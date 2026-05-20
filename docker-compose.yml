@@ -1,7 +1,39 @@
 services:
+  web:
+    container_name: modulemanager-app
+    build:
+      context: .
+      target: development
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - POSTGRES_DB=djangodb
+      - POSTGRES_USER=djangouser
+      - POSTGRES_PASSWORD=django123
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - __pycache__/
+            - "*.pyc"
+            - .git/
+            - .venv/
+        - action: rebuild
+          path: pyproject.toml
+        - action: rebuild
+          path: uv.lock
+  
   db:
     image: postgres:16-alpine
-    container_name: modulemanager-postgres
+    container_name: modulemanager-db
     restart: unless-stopped
     ports:
       - "5432:5432"
