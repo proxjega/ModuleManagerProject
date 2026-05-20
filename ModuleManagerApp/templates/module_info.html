@@ -16,6 +16,7 @@
             </div>
         </div>
 
+        {% if not form %}
         <div class="module-card">
             <p class="module-meta">Teacher: {{ module.teacher }}</p>
             {% if module.description %}
@@ -24,11 +25,48 @@
                 <p class="module-description">No description added yet.</p>
             {% endif %}
             <div class="module-actions">
-                <a class="button" >Redact</a>
+                <a class="button" href="{% url 'module_info' module.id %}?edit=1">Redact</a>
                 <a class="button" >PDF</a>
                 <a class="button danger" >Delete</a>
             </div>
         </div>
+        {% endif %}
+
+        {% if form %}
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <ul class="non-field-errors">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div class="form-grid-vertical">
+                    {% for field in form %}
+                        {% if field.name != 'title' %}
+                        <div class="field{% if field.errors %} with-error{% endif %}">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <ul class="error-list">
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="footer-actions">
+                    <button type="submit" class="button primary">Save module</button>
+                    <a class="button" href="{% url 'module_info' module.id %}">Cancel</a>
+                </div>
+            </form>
+        {% endif %}
     </main>
 </body>
 </html>

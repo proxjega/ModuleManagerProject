@@ -32,7 +32,7 @@ def module_create(request):
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
             services.create_module(request.user, form.cleaned_data)
-            return redirect("modules") #do this
+            return redirect("modules")
     else:
         form = forms.ModuleForm()
     return render(request, "module_create.html", {"form": form}) # template
@@ -46,7 +46,10 @@ def module_redact(request):
             services.create_module(request.user, form.cleaned_data)
             return redirect("modules") #do this
     else:
-        form = forms.ModuleForm()
+        is_edit_mode = request.GET.get("edit") == "1"
+        if is_edit_mode:
+            form = forms.ModuleForm()
+            return render(request, "module_create.html", {"form":form})
     return render(request, "module_create.html", {"form": form}) # template
 
 
@@ -56,7 +59,9 @@ def profile(request):
     if request.method == "POST":
         form = forms.ProfileEditForm(request.POST)
         if form.is_valid():
+
             services.redact_profile(request.user, form.cleaned_data)
+
             return redirect("profile")
     else:
         is_edit_mode = request.GET.get("edit") == "1"
@@ -80,5 +85,17 @@ def module_info(request, module_id):
     module = Module.objects.filter(id=module_id, user=request.user).first()
     if module is None:
         return redirect("modules")
+    
+    if request.method == "POST":
+        form = forms.ModuleForm(request.POST)
+        if form.is_valid():
 
+            # services.create_module(request.user, form.cleaned_data)
+
+            return redirect("modules") #do this
+    else:
+        is_edit_mode = request.GET.get("edit") == "1"
+        if is_edit_mode:
+            form = forms.ModuleForm(instance=module)
+            return render(request, "module_info.html", {"form": form, "module": module}) # template
     return render(request, "module_info.html", {"module": module})

@@ -264,6 +264,10 @@ dt {
     gap: 12px;
 }
 
+.form-grid-vertical {
+    display: block;
+}
+
 .inline-form {
     margin: 0;
 }
