@@ -1,12 +1,3 @@
-# PROJECT IS UNFINISHED
-## Right now this works:
-- Registration
-- Login
-- View profile
-- Create module
-- View modules
-### More features are coming soon!
-
 # Module Manager
 
 A web application built with **Django** for managing subject modules. The system allows authenticated users to create, view, edit, and manage their own modules and generate a PDF document from module data.
@@ -32,17 +23,25 @@ The project applies the **Single Responsibility Principle**:
 
 Each component is responsible for one clear task, improving readability, maintainability, and testability.
 
-## Database
-
-The application uses **PostgreSQL** as the database backend. Django’s ORM is used to define models and manage database migrations.
-
 ## Features
 
 - User authentication
 - Per-user module management
 - Module creation and editing
 - Viewing module data
+- Deleting modules
 - PDF generation from module information
+
+## Dependencies
+- Docker
+- django>=6.0.5
+- gunicorn>=26.0.0
+- psycopg>=3.3.4
+- psycopg2>=2.9.12
+- reportlab>=4.5.1  
+#### see `pyproject.toml`
+
+
 ## Installation
 
 ### Docker setup:
@@ -52,17 +51,20 @@ The application uses **PostgreSQL** as the database backend. Django’s ORM is u
 # Install docker:
 yay -Syu docker-desktop
 ```
-#### Prepare database (postgres in docker):
+#### Run 
 
-1. Start the database container:
 ```bash
-docker compose up -d db
+docker compose up -d
 ```
-This will create a PostgreSQL container published on port `5432:5432` with the following credentials:
+This will create a PostgreSQL container **modulemanager-db** published on port `5432:5432` with the following credentials:
 
 - `POSTGRES_DB=djangodb`
 - `POSTGRES_USER=djangouser`
 - `POSTGRES_PASSWORD=django123`
+
+And **modulemanager-app** container with django on port `8000:8000` with two seed accounts:
+- Admin account: `admin:admin`
+- User account: `user:user1234`
 
 ### Running from source:
 
@@ -109,3 +111,6 @@ user=djangouser
 localhost:5432:djangodb:djangouser:django123
 ```
 
+## Database
+
+The application uses **PostgreSQL** as the database backend. Django’s ORM is used to define models and manage database migrations.
