@@ -12,7 +12,11 @@ The project follows Django’s **Model–View–Template (MVT)** architecture:
 
 This separation keeps the application modular and easier to maintain.
 
-## Design Principles
+### Database
+
+The application uses **PostgreSQL** as the database backend. Django’s ORM is used to define models and manage database migrations.
+
+### Design Principles
 
 The project applies the **Single Responsibility Principle**:
 
@@ -31,6 +35,7 @@ Each component is responsible for one clear task, improving readability, maintai
 - Viewing module data
 - Deleting modules
 - PDF generation from module information
+- Basic front-end
 
 ## Dependencies
 - Docker
@@ -43,7 +48,7 @@ Each component is responsible for one clear task, improving readability, maintai
 
 ## Setup
 
-### Docker setup:
+### Docker setup (recommended):
 
 #### Install dependencies:
 ```bash
@@ -53,7 +58,8 @@ yay -Syu docker-desktop
 #### Run 
 
 ```bash
-docker compose up -d
+# Activate all containers
+docker compose up --build
 ```
 This will create a PostgreSQL container **modulemanager-db** published on port `5432:5432` with the following credentials:
 
@@ -69,8 +75,29 @@ And **modulemanager-app** container with django on port `8000:8000` with two see
 - http://localhost:8000/ - the app
 - http://localhost:8000/admin - admin panel
 
-### Running from source:
+#### You can also run database or app containters separately:
+```bash
+# Web app container
+docker compose up web
+docker compose up --build web # build the app
+docker compose down web
 
+# Database container
+docker compose up db
+docker compose down db
+docker compose down -v db # remove the volume (delete the database)
+```
+
+#### To access Django manage.py CLI:
+```bash
+# after activating containers, run this:
+docker exec modulemanager-app python3 manage.py <command>
+# for example to run tests, run:
+docker exec modulemanager-app python3 manage.py test
+```
+
+### Running from source:
+You can also run code without docker. All the instructions are for Arch Linux x86_64. 
 #### Install dependencies:
 ```bash
 sudo pacman -Syu python postgresql python-psycopg
@@ -113,7 +140,11 @@ user=djangouser
 ```
 localhost:5432:djangodb:djangouser:django123
 ```
-
-## Database
-
-The application uses **PostgreSQL** as the database backend. Django’s ORM is used to define models and manage database migrations.
+#### Run Django
+```bash
+# migrate
+python manage.py migrate
+# create seed accounts (user:user1234, admin:admin)
+python manage.py seed_accounts
+# run debug server on 8000 port
+python manage.py runserver 0.0.0.0:8000
