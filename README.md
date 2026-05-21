@@ -66,7 +66,7 @@ And **modulemanager-app** container with django on port `8000:8000` with two see
 - User account: `user:user1234`
 
 #### Then you can use the app
-- http://localhost:8000/app/ - the app
+- http://localhost:8000/ - the app
 - http://localhost:8000/admin - admin panel
 
 ### Running from source:
