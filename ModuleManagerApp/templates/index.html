@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Module Manager</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'ModuleManagerApp/styles.css' %}">
+</head>
+<body class="landing-page">
+	<main class="container">
+		<h1>Module Manager</h1>
+		<p class="subtitle">
+			A Django web application for managing subject modules. Authenticated users can create,
+			update, and view their own module data and generate PDF documents from module information.
+		</p>
+
+		<div class="actions">
+			<a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+			<a class="btn btn-secondary" href="{% url 'register' %}">Register</a>
+		</div>
+
+		<section>
+			<h2>Architecture</h2>
+			<p>
+				The project follows Django's Model-View-Template pattern to keep data models,
+				request handling, and UI rendering clearly separated.
+			</p>
+		</section>
+
+		<section>
+			<h2>Design Principles</h2>
+			<ul>
+				<li>Models handle persistence and database mapping.</li>
+				<li>Forms validate user input.</li>
+				<li>Views handle request routing and responses.</li>
+				<li>Services contain business logic like registration and module management.</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Features</h2>
+			<ul>
+				<li>User authentication</li>
+				<li>Per-user module management</li>
+				<li>Module creation and editing</li>
+				<li>Module information export to PDF</li>
+			</ul>
+		</section>
+	</main>
+</body>
+</html>

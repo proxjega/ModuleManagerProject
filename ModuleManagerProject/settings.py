@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import sys
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ModuleManagerApp.apps.ModulemanagerappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,12 +78,23 @@ WSGI_APPLICATION = 'ModuleManagerProject.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "service": "my_service",
-            "passfile": "/home/proxjega/.my_pgpass",
+        "NAME": getenv("POSTGRES_DB", "djangodb"),
+        "USER": getenv("POSTGRES_USER", "djangouser"),
+        "PASSWORD": getenv("POSTGRES_PASSWORD", "django123"),
+        "HOST": getenv("POSTGRES_HOST", "localhost"),
+        "PORT": getenv("POSTGRES_PORT", "5432"),
+        "TEST": {
+            "NAME": getenv("TEST_DB_NAME", "test_database"),
         },
     }
 }
+
+# Keep tests runnable even when PostgreSQL is not available locally.
+if "test" in sys.argv and getenv("USE_SQLITE_FOR_TESTS", "1") == "1":
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "test_db.sqlite3",
+    }
 
 
 # Password validation
@@ -123,3 +137,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'ModuleManagerApp.CustomUser'
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'index'
